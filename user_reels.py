@@ -17,7 +17,6 @@ headers = {
     "X-Ig-App-Id": "936619743392459",
     "X-Root-Field-Name": "xdt_api__v1__clips__user__connection_v2",
     "X-Fb-Lsd": "DVG2otd606zWH8rzuN2ybO",
-    "X-Asbd-Id": "359341",
     "Origin": "https://www.instagram.com",
     "Dnt": "1",
     "Referer": "https://www.instagram.com/ezsnippet/reels",
@@ -44,7 +43,7 @@ variables_dict = {
   "data": {
     "include_feed_video": True,  # Python boolean True
     "page_size": 12,
-    "target_user_id": "59856346363"
+    "target_user_id": "21864547813"
   }
 }
 
@@ -61,14 +60,77 @@ query_params = {
     "doc_id": other_params["doc_id"]
 }
 
-data = urlencode(query_params)
+encoded_data = urlencode(query_params)
 
-response = requests.post(url, headers=headers, cookies=cookies, data=data)
+response = requests.post(url, headers=headers, cookies=cookies, data=encoded_data)
 
-print("Status Code:", response.status_code)
+# print("Status Code:", response.status_code)
 
-import json
 data = json.loads(response.text)
 
-with open("user_reels.json", "w") as f:
+with open("user_reels_1.json", "w") as f:
+    json.dump(data, f, indent=4)
+
+print("Data:", data["data"]["xdt_api__v1__clips__user__connection_v2"]["page_info"]["end_cursor"])
+
+variables_dict = {
+  "after": data["data"]["xdt_api__v1__clips__user__connection_v2"]["page_info"]["end_cursor"],
+  "before": None,
+  "data": {
+    "include_feed_video": True,
+    "page_size": 12,
+    "target_user_id": "21864547813"
+  },
+  "first": 4,
+  "last": None
+}
+
+other_params = {
+    "server_timestamps": True,
+    "doc_id": "10087824784583683"
+}
+
+variables_json_string = json.dumps(variables_dict, separators=(',', ':'))
+
+query_params = {
+    "variables": variables_json_string,
+    "server_timestamps": str(other_params["server_timestamps"]).lower(),
+    "doc_id": other_params["doc_id"]
+}
+
+encoded_data = urlencode(query_params)
+response = requests.post(url, headers=headers, cookies=cookies, data=encoded_data)
+# print("Status Code:", response.status_code)
+data = json.loads(response.text)
+with open("user_reels_2.json", "w") as f:
+    json.dump(data, f, indent=4)
+
+variables_dict = {
+    "after": data["data"]["xdt_api__v1__clips__user__connection_v2"]["page_info"]["end_cursor"],
+    "before": None,
+    "data": {
+        "include_feed_video": True,
+        "page_size": 12,
+        "target_user_id": "21864547813"
+    },
+    "first": 4,
+    "last": None
+}
+other_params = {
+    "server_timestamps": True,
+    "doc_id": "10087824784583683"
+}
+
+variables_json_string = json.dumps(variables_dict, separators=(',', ':'))
+query_params = {
+    "variables": variables_json_string,
+    "server_timestamps": str(other_params["server_timestamps"]).lower(),
+    "doc_id": other_params["doc_id"]
+}
+encoded_data = urlencode(query_params)
+response = requests.post(url, headers=headers, cookies=cookies, data=encoded_data)
+
+# print("Status Code:", response.status_code)
+data = json.loads(response.text)
+with open("user_reels_3.json", "w") as f:
     json.dump(data, f, indent=4)
